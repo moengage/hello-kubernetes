@@ -1,0 +1,18 @@
+---
+kind: pipeline
+name: hello-k8s
+
+steps:
+- name: Project build
+  image: plugins/ecr
+  settings:
+    repo: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hello-kubernetes
+    registry: 612427630422.dkr.ecr.us-east-1.amazonaws.com
+    tags:
+      - ${DRONE_COMMIT_SHA:0:8}
+      - ${DRONE_COMMIT_BRANCH}
+      - latest
+
+trigger: # Trigger above steps on any change in dev branch on push event
+  event: [ push ]
+
