@@ -2,23 +2,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: hello-k8s
+  name: hola
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: hello-k8s
+      app: hola
   template:
     metadata:
       labels:
-        app: hello-k8s
+        app: hola
     spec:
       containers:
-      - name: hello-k8s
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hello-kubernetes:latest
+      - name: hola
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:latest
         resources:
           requests:
             cpu: 10m
             memory: 20Mi
 ---
-

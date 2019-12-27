@@ -2,16 +2,16 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello-k8s
+  name: hola
   annotations:
     kubernetes.io/ingress.class: internal-traefik
 spec:
   rules:
-  - host: hello-k8s-internal.prod-x-default.moengage.com
+  - host: hola-internal.prod-x-default.moengage.com
     http:
       paths:
       - path: /
         backend:
-          serviceName: hello-k8s
+          serviceName: hola
           servicePort: http
 ---
