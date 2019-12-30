@@ -4,5 +4,8 @@ apiVersion: v1
 metadata:
   name: hola
 data:
-  S3_BUCKET_NAME: "moengage-prod-sre-fluentd-logs"
+  ENVIRONMENT: "prod"
+  S3_INSTANCE_ROLE_BUCKET_NAME: "moengage-prod-x-us-east-1-prod-x-default-thanos-storage"
+  S3_POD_ROLE_BUCKET_NAME: "moengage-prod-sre-fluentd-logs"
+  S3_CREDENTIALS_BUCKET_NAME: "moengage-misc"
 
