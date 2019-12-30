@@ -1,6 +1,7 @@
 import os
 
 import boto3
+from botocore.exceptions import ClientError
 from flask import Flask
 from flask import request, render_template
 
@@ -40,13 +41,16 @@ class S3Utils(object):
 
     def get_objects(self):
         data = []
-        for object_summary in self._bucket.objects.all():
-            data.append(object_summary.key)
-        return data
+        try:
+            for object_summary in self._bucket.objects.all():
+                data.append(object_summary.key)
+            return data
+        except ClientError as e:
+            return [str(e)]
 
 
 S3_LIST_OBJECTS_TEMPLATE = (
-    '<b>{role_type} access test</b>\n'
+    '{role_type} access test\n'
     'Bucket Name: {bucket_name}\n'
     'Environment: {environment}\n'
     'S3 Objects (max 5 objects): {objects}\n'
