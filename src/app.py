@@ -1,14 +1,16 @@
 import os
 
+import boto3
 from flask import Flask
 from flask import request, render_template
 
+from src.config import S3_BUCKET_NAME
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def hello():
+def hola():
     template = (
         "Hostname: {pod_name}\n"
         "Namespace: {pod_namespace}\n"
@@ -25,3 +27,15 @@ def hello():
     )
     context = ''.join([pod_details, str(request.headers)])
     return render_template('template.html', context=context)
+
+
+@app.route("/s3/")
+def list_s3():
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(S3_BUCKET_NAME)
+
+    for object_summary in bucket.objects.filter(Prefix="/"):
+        print(object_summary.key)
+
+    return S3_BUCKET_NAME
+

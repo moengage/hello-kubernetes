@@ -1,0 +1,8 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: hola
+data:
+  S3_BUCKET_NAME: "moengage-prod-sre-fluentd-logs"
+
