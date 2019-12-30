@@ -6,6 +6,6 @@ metadata:
 data:
   ENVIRONMENT: "prod"
   S3_INSTANCE_ROLE_BUCKET_NAME: "moengage-prod-x-us-east-1-prod-x-default-thanos-storage"
-  S3_POD_ROLE_BUCKET_NAME: "moe-pushlogs"
+  S3_POD_ROLE_BUCKET_NAME: "uis-configs-prod"
   S3_CREDENTIALS_BUCKET_NAME: "moengage-misc"
 
