@@ -5,8 +5,7 @@ from botocore.exceptions import ClientError
 from flask import Flask
 from flask import request, render_template
 
-from src.config import (S3_INSTANCE_ROLE_BUCKET_NAME, S3_POD_ROLE_BUCKET_NAME,
-        S3_CREDENTIALS_BUCKET_NAME, ENVIRONMENT)
+from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET_VALUE)
 
 app = Flask(__name__)
 
@@ -19,6 +18,7 @@ def hola():
         "Environment: {environment}\n"
         "IP: {pod_ip}\n"
         "{request_method} {request_path} {http_version}\n"
+        "Value of {secret_key} is {secret_value}\n"
     )
     pod_details = template.format(
         pod_name=os.getenv('POD_NAME'),
@@ -27,7 +27,9 @@ def hola():
         pod_ip=os.getenv('POD_IP'),
         request_method=request.method,
         request_path=request.path,
-        http_version=request.environ.get('SERVER_PROTOCOL')
+        http_version=request.environ.get('SERVER_PROTOCOL'),
+        secret_key=SECRET_KEY,
+        secret_value=SECRET_VALUE,
     )
     context = ''.join([pod_details, str(request.headers)])
     return render_template('template.html', context=context)
@@ -56,20 +58,6 @@ S3_LIST_OBJECTS_TEMPLATE = (
     'S3 Objects (max 5 objects): {objects}\n'
 )
 
-@app.route("/s3-instance-role/")
-def list_s3_instance_role():
-    bucket = S3_INSTANCE_ROLE_BUCKET_NAME
-    s3 = S3Utils(bucket)
-    s3_objects = '   '.join(s3.get_objects()[:5])
-    context = S3_LIST_OBJECTS_TEMPLATE.format(
-        role_type='Instance role',
-        bucket_name=bucket,
-        environment=ENVIRONMENT,
-        objects=s3_objects
-    )
-    return render_template('template.html', context=context)
-
-
 @app.route("/s3-pod-role/")
 def list_s3_pod_role():
     bucket = S3_POD_ROLE_BUCKET_NAME
@@ -77,20 +65,6 @@ def list_s3_pod_role():
     s3_objects = '   '.join(s3.get_objects()[:5])
     context = S3_LIST_OBJECTS_TEMPLATE.format(
         role_type='Pod role',
-        bucket_name=bucket,
-        environment=ENVIRONMENT,
-        objects=s3_objects
-    )
-    return render_template('template.html', context=context)
-
-
-@app.route("/s3-credentials/")
-def list_s3():
-    bucket = S3_CREDENTIALS_BUCKET_NAME
-    s3 = S3Utils(bucket)
-    s3_objects = '   '.join(s3.get_objects()[:5])
-    context = S3_LIST_OBJECTS_TEMPLATE.format(
-        role_type='Credentials',
         bucket_name=bucket,
         environment=ENVIRONMENT,
         objects=s3_objects

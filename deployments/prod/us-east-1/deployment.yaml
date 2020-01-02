@@ -48,4 +48,7 @@ spec:
         envFrom:
         - configMapRef:
             name: hola
+        envFrom:
+        - secretRef:
+            name: hola
 ---
