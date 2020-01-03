@@ -1,13 +1,7 @@
----
-kind: pipeline
-name: hola
-
-steps:
-- name: build
-  image: plugins/ecr
-  settings:
+pipeline:
+  build:
+    image: plugins/ecr
     repo: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola
-    registry: 612427630422.dkr.ecr.us-east-1.amazonaws.com
     tags:
       - ${DRONE_COMMIT_SHA:0:8}
       - ${DRONE_COMMIT_BRANCH}
