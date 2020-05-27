@@ -27,7 +27,7 @@ spec:
         fsGroup: 65534
       containers:
       - name: hola
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:latest
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:4126453f
         resources:
           requests:
             cpu: 100m
