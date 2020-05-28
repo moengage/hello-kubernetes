@@ -19,7 +19,7 @@ def hola():
         "IP: {pod_ip}\n"
         "{request_method} {request_path} {http_version}\n"
         "Value of {secret_key} is {secret_value}\n"
-        "I am adding a new line"
+        "Hello World!"
     )
     pod_details = template.format(
         pod_name=os.getenv('POD_NAME'),
