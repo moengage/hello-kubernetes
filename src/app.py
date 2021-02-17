@@ -14,7 +14,7 @@ app = Flask(__name__)
 def load_config(fail_silently=False):
     config_path = '/home/hola/dynamic-config.json'
 
-    retry = 10
+    retry = 60
     for i in range(retry):
         try:
             with open(config_path) as fp:
