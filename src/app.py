@@ -1,13 +1,43 @@
 import os
+import json
 
 import boto3
+import time
 from botocore.exceptions import ClientError
 from flask import Flask
-from flask import request, render_template
+from flask import request, render_template, jsonify
 
 from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET_VALUE)
 
 app = Flask(__name__)
+
+def load_config(fail_silently=False):
+    config_path = '/home/hola/dynamic-config.json'
+
+    retry = 10
+    for i in range(retry):
+        try:
+            with open(config_path) as fp:
+                app.dynamic_config = json.load(fp)
+        except FileNotFoundError:
+            time.sleep(1)
+            print('Retrying fetching config!')
+            if i+1 == retry:
+                print('Failed to load config.')
+                if fail_silently:
+                    print('Failing silently.')
+                    app.dynamic_config = {}
+                else:
+                    raise
+
+
+load_config()
+
+
+@app.route("/-/reload")
+def config_reload():
+    load_config(fail_silently=True)
+    return jsonify('ok')
 
 
 @app.route("/")
@@ -19,8 +49,10 @@ def hola():
         "IP: {pod_ip}\n"
         "{request_method} {request_path} {http_version}\n"
         "Value of {secret_key} is {secret_value}\n"
-        "Hello World!"
+        "Hello World!\n"
+        "Dynamic config: {dynamic_config}\n"
     )
+
     pod_details = template.format(
         pod_name=os.getenv('POD_NAME'),
         pod_namespace=os.getenv('POD_NAMESPACE'),
@@ -31,7 +63,9 @@ def hola():
         http_version=request.environ.get('SERVER_PROTOCOL'),
         secret_key=SECRET_KEY,
         secret_value=SECRET_VALUE,
+        dynamic_config=app.dynamic_config
     )
+
     context = ''.join([pod_details, str(request.headers)])
     return render_template('template.html', context=context)
 

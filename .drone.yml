@@ -1,11 +1,24 @@
 pipeline:
-  build:
+  build-hola:
+    group: build
     image: plugins/ecr
     repo: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola
     tags:
       - ${DRONE_COMMIT_SHA:0:8}
       - ${DRONE_COMMIT_BRANCH}
       - latest
+
+  build-confd:
+    group: build
+    image: plugins/ecr
+    dockerfile: ./Dockerfile.sidecar
+    context: ./
+    repo: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd
+    tags:
+      - ${DRONE_COMMIT_SHA:0:8}
+      - ${DRONE_COMMIT_BRANCH}
+      - latest
+
 
 trigger: # Trigger above steps on any change in dev branch on push event
   event: [ push ]

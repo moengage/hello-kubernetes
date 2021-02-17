@@ -13,7 +13,7 @@ kind: Deployment
 metadata:
   name: hola
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: hola
@@ -27,7 +27,7 @@ spec:
         fsGroup: 65534
       containers:
       - name: hola
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:b027f2be
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:latest
         resources:
           requests:
             cpu: 100m
@@ -50,4 +50,19 @@ spec:
             name: hola
         - secretRef:
             name: hola
+        volumeMounts:
+        - name: dynamic-config
+          mountPath: /opt/hola/
+          readOnly: true
+      - name: confd-config-manager-sidecar
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:latest
+        command: ["confd"]
+        args: ["-backend", "consul", "-node", "https://consul.moengage.com", "-interval", "10", "-watch"]
+        volumeMounts:
+        - name: dynamic-config
+          mountPath: /opt/hola/
+      volumes:
+        - name: dynamic-config
+          emptyDir: {}
 ---
+
