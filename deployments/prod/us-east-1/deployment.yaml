@@ -27,7 +27,7 @@ spec:
         fsGroup: 65534
       containers:
       - name: hola
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:96fb178d
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:96c2b590
         imagePullPolicy: Always
         resources:
           requests:
@@ -54,7 +54,7 @@ spec:
           mountPath: /opt/hola/
           readOnly: true
       - name: confd
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:96fb178d
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:96c2b590
         imagePullPolicy: Always
         command: ["confd"]
         args: ["-backend", "consul", "-node", "http://consul.sre.svc.cluster.local:8500", "-interval", "10", "-watch"]
