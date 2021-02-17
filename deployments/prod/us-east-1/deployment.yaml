@@ -8,7 +8,7 @@ metadata:
     eks.amazonaws.com/role-arn: arn:aws:iam::612427630422:role/us-east-1-prod-x-default-default-hola
 automountServiceAccountToken: true
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hola
@@ -48,16 +48,14 @@ spec:
         envFrom:
         - configMapRef:
             name: hola
-        - secretRef:
-            name: hola
         volumeMounts:
         - name: dynamic-config
           mountPath: /opt/hola/
           readOnly: true
-      - name: confd-config-manager-sidecar
+      - name: confd
         image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:latest
         command: ["confd"]
-        args: ["-backend", "consul", "-node", "https://consul.moengage.com", "-interval", "10", "-watch"]
+        args: ["-backend", "consul", "-node", "http://consul.sre.svc.cluster.local", "-interval", "10", "-watch"]
         volumeMounts:
         - name: dynamic-config
           mountPath: /opt/hola/
