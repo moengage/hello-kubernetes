@@ -4,4 +4,4 @@ dest = '/opt/hola/dynamic-config.json'
 mode = '0644'
 keys = ['config.json']
 prefix = '/hola/'
-reload_cmd = "curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://127.0.0.1/-/reload"
+reload_cmd = "curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://127.0.0.1:5000/-/reload"
