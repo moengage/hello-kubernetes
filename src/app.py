@@ -35,9 +35,9 @@ def load_config(fail_silently=True, *args, **kwargs):
 
 
 app = Flask(__name__)
-load_config(fail_silently=False)
-signal.signal(signal.SIGUSR1, load_config)
 Log.get_logger(level=Log.DEBUG)
+signal.signal(signal.SIGUSR1, load_config)
+load_config(fail_silently=False)
 
 
 @app.route("/")
