@@ -10,6 +10,7 @@ from flask import Flask
 from flask import request, render_template, jsonify
 
 from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET_VALUE)
+from src.pylogging import Log
 
 
 def load_config(fail_silently=True, *args, **kwargs):
@@ -20,14 +21,14 @@ def load_config(fail_silently=True, *args, **kwargs):
         try:
             with open(config_path) as fp:
                 app.dynamic_config = json.load(fp)
-                print('Loaded config for PID: {}'.format(os.getpid()))
+                Log.debug('Loaded config for PID: {}'.format(os.getpid()))
         except FileNotFoundError:
             time.sleep(1)
-            print('Retrying fetching config!')
+            Log.debug('Retrying fetching config!')
             if i+1 == retry:
-                print('Failed to load config.')
+                Log.debug('Failed to load config.')
                 if fail_silently:
-                    print('Failing silently.')
+                    Log.debug('Failing silently.')
                     app.dynamic_config = {}
                 else:
                     raise
@@ -36,6 +37,7 @@ def load_config(fail_silently=True, *args, **kwargs):
 app = Flask(__name__)
 load_config(fail_silently=False)
 signal.signal(signal.SIGUSR1, load_config)
+Log.get_logger(level=Log.DEBUG)
 
 
 @app.route("/")
