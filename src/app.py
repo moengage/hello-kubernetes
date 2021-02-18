@@ -11,7 +11,7 @@ from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET
 
 app = Flask(__name__)
 
-def load_config(fail_silently=True):
+def load_config(fail_silently=True, **kwargs):
     config_path = '/opt/hola/dynamic-config.json'
 
     retry = 60
