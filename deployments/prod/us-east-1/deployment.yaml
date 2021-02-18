@@ -28,7 +28,7 @@ spec:
         fsGroup: 65534
       containers:
       - name: hola
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:ae1d7703
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:80ea0f62
         imagePullPolicy: Always
         resources:
           requests:
@@ -59,7 +59,7 @@ spec:
           capabilities:
             add:
             - SYS_PTRACE
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:ae1d7703
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:80ea0f62
         imagePullPolicy: Always
         command: ["confd"]
         args: ["-backend", "consul", "-node", "http://consul.sre.svc.cluster.local:8500", "-interval", "10", "-watch"]
