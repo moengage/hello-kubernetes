@@ -22,6 +22,7 @@ def load_config(fail_silently=True, *args, **kwargs):
             with open(config_path) as fp:
                 app.dynamic_config = json.load(fp)
                 Log.debug('Loaded config for PID: {}'.format(os.getpid()))
+                break
         except FileNotFoundError:
             time.sleep(1)
             Log.debug('Retrying fetching config!')
