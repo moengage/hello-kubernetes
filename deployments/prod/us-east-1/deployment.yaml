@@ -22,12 +22,13 @@ spec:
       labels:
         app: hola
     spec:
+      shareProcessNamespace: true
       serviceAccountName: hola
       securityContext:
         fsGroup: 65534
       containers:
       - name: hola
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:9026070b
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/hola:69f1c8f6
         imagePullPolicy: Always
         resources:
           requests:
@@ -54,7 +55,11 @@ spec:
           mountPath: /opt/hola/
           readOnly: true
       - name: confd
-        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:9026070b
+        securityContext:
+          capabilities:
+            add:
+            - SYS_PTRACE
+        image: 612427630422.dkr.ecr.us-east-1.amazonaws.com/sre/confd:69f1c8f6
         imagePullPolicy: Always
         command: ["confd"]
         args: ["-backend", "consul", "-node", "http://consul.sre.svc.cluster.local:8500", "-interval", "10", "-watch"]

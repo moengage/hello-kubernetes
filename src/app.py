@@ -11,7 +11,7 @@ from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET
 
 app = Flask(__name__)
 
-def load_config(fail_silently=False):
+def load_config(fail_silently=True):
     config_path = '/opt/hola/dynamic-config.json'
 
     retry = 60
@@ -31,12 +31,16 @@ def load_config(fail_silently=False):
                     raise
 
 
-load_config()
+load_config(fail_silently=False)
+
+import signal
+
+signal.signal(signal.SIGHUP, load_config)
 
 
 @app.route("/-/reload")
 def config_reload():
-    load_config(fail_silently=True)
+    load_config()
     return jsonify('ok')
 
 
