@@ -1,15 +1,16 @@
-import os
+
 import json
+import signal
+import os
+import time
 
 import boto3
-import time
 from botocore.exceptions import ClientError
 from flask import Flask
 from flask import request, render_template, jsonify
 
 from src.config import (S3_POD_ROLE_BUCKET_NAME, ENVIRONMENT, SECRET_KEY, SECRET_VALUE)
 
-app = Flask(__name__)
 
 def load_config(fail_silently=True, *args, **kwargs):
     config_path = '/opt/hola/dynamic-config.json'
@@ -31,17 +32,9 @@ def load_config(fail_silently=True, *args, **kwargs):
                     raise
 
 
+app = Flask(__name__)
 load_config(fail_silently=False)
-
-import signal
-
 signal.signal(signal.SIGUSR1, load_config)
-
-
-@app.route("/-/reload")
-def config_reload():
-    load_config()
-    return jsonify('ok')
 
 
 @app.route("/")
