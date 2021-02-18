@@ -4,5 +4,4 @@ dest = '/opt/hola/dynamic-config.json'
 mode = '0644'
 keys = ['config.json']
 prefix = '/hola/'
-check_cmd = "pkill -HUP gunicorn"
-reload_cmd = "curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://127.0.0.1:5000/-/reload"
+reload_cmd = "pkill -USR1 gunicorn"

@@ -35,7 +35,7 @@ load_config(fail_silently=False)
 
 import signal
 
-signal.signal(signal.SIGHUP, load_config)
+signal.signal(signal.SIGUSR1, load_config)
 
 
 @app.route("/-/reload")
