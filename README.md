@@ -1,5 +1,5 @@
-demo app
---------
+Hola!
+-----
 
 This is a simple app which has dynamic configuration demo and provide basic configmap, secret, iam role usage and kubernetes deployment spec.
 
