@@ -1,7 +1,7 @@
-Proposal for adoption of 12 factor app methodology
---------------------------------------------------
+demo app
+--------
 
-This repository is just for an example of how the services would look like after dockerization.
+This is a simple app which has dynamic configuration demo and provide basic configmap, secret, iam role usage and kubernetes deployment spec.
 
 
 Principals
