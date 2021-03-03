@@ -15,7 +15,7 @@ dependencies. This project is developed using virtual environment in local, but 
 there is not venv
 
 [*Config*](https://12factor.net/config): We identified configs as key-value pairs and secrets. KVs
-and Secrets are being managed by ConfigMap and BitnamiSecrets respectively. Have a look at `./deployments/prod/us-east-1/configmap.yaml` and `./deployments/prod/us-east-1/secret.yaml` and `./src/config.py`
+and Secrets are being managed by ConfigMap and Secrets respectively. Confd sidecar can be used to dynamically fetch config from consul and store in a local directory which you can mount as config volume. Config change doesn't require new deployment.
 
 [*Backing Services*](https://12factor.net/backing-services): Services must be treated as resources
 and URLs and credentials must use config maps or secrets as necessary.
@@ -26,7 +26,7 @@ gets initialized when you push to github. Build is defined here: `./.drone.yml`
   - Release and run phases are managed by argo. Click on 'Sync' on respective argo application to
     release and rollout deploy
 
-[*Processes*](https://12factor.net/processes): Hola app runs as gunicorn process
+[*Processes*](https://12factor.net/processes): Hola app runs as gunicorn process with 4 worker processes.
 
 [*Port binding*](https://12factor.net/port-binding): Hosts the app on 5000
 
@@ -39,7 +39,7 @@ delegated to gunicorn and supports these (signals)[http://docs.gunicorn.org/en/l
 However disposability is far vast topic more than just handling signals but `hola` being a simple
 app there is not much to demonstrate.
 
-[*Dev/prod parity*](https://12factor.net/dev-prod-parity): We plan to use same architecture for all
+[*Dev/prod parity*](https://12factor.net/dev-prod-parity): Same architecture for all
 environments, mostly configmaps and secret will differ.
 
 [*Logs*](https://12factor.net/logs): As a 12factor app, the app should never manage log files
